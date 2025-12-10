@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>كيف تشعر اليوم؟ | مدرسة مُشيرفة</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Changa:wght@400;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-bg: #e0f7fa;
+            --container-bg: #ffffff;
+            --primary-text: #00796b;
+            --secondary-text: #004d40;
+            --border-color: #b2dfdb;
+            --focus-color: #ffab40;
+            --button-gradient-start: #ff8a65;
+            --button-gradient-end: #ff7043;
+        }
+        body {
+            font-family: 'Changa', sans-serif;
+            background-color: var(--primary-bg);
+            background-image: radial-gradient(var(--border-color) 1.5px, transparent 1.5px);
+            background-size: 25px 25px;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            box-sizing: border-box;
+        }
+        .form-container {
+            background-color: var(--container-bg);
+            padding: 40px;
+            border-radius: 25px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            max-width: 700px;
+            width: 100%;
+            border: 5px solid var(--container-bg);
+            transition: padding 0.3s ease;
+        }
+        .school-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .school-name {
+            color: var(--primary-text);
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+        h2 {
+            text-align: center;
+            color: var(--primary-text);
+            margin-bottom: 30px;
+            font-size: 2.5rem;
+            font-weight: 700;
+            transition: font-size 0.3s ease;
+        }
+        .form-group { margin-bottom: 25px; }
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 700;
+            color: var(--secondary-text);
+            font-size: 1.1rem;
+        }
+        input[type="text"], select, textarea {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid var(--border-color);
+            border-radius: 15px;
+            box-sizing: border-box; 
+            font-size: 1rem;
+            font-family: 'Changa', sans-serif;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+        input[type="text"]:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: var(--focus-color);
+            box-shadow: 0 0 10px rgba(255, 171, 64, 0.5);
+        }
+        
+        .feelings-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 15px;
+            padding: 10px 0;
+        }
+        .feeling-option {
+            background-color: #f8f9fa;
+            border-radius: 20px;
+            padding: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            border: 2px solid transparent;
+        }
+        .feeling-option:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0,0,0,0.07);
+        }
+        .feeling-option .emoji {
+            font-size: 3rem;
+            transition: transform 0.2s ease;
+            display: block;
+            margin: 0 auto 5px;
+        }
+        .feeling-option .feeling-text {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #343a40;
+        }
+        input[type="radio"] {
+            display: none;
+        }
+        input[type="radio"]:checked + .feeling-option {
+            border-color: var(--focus-color);
+            background-color: #fffbeb;
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+        }
+        input[type="radio"]:checked + .feeling-option .emoji {
+            transform: scale(1.2);
+        }
+
+        button[type="submit"] {
+            width: 100%; padding: 18px;
+            background: linear-gradient(45deg, var(--button-gradient-start), var(--button-gradient-end));
+            color: white; border: none; border-radius: 50px;
+            font-size: 1.4rem; font-weight: 700; font-family: 'Changa', sans-serif;
+            cursor: pointer; transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 5px 15px rgba(255, 112, 67, 0.4);
+        }
+        button[type="submit"]:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(255, 112, 67, 0.6);
+        }
+        button[type="submit"]:active {
+            transform: translateY(0);
+        }
+        .dashboard-link {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .dashboard-link a {
+            color: var(--primary-text);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 0.9rem;
+            transition: color 0.3s;
+        }
+        .dashboard-link a:hover {
+            color: var(--focus-color);
+        }
+        #responseMessage {
+            text-align: center; margin-top: 20px; font-weight: bold; font-size: 1.2rem;
+            padding: 15px;
+            border-radius: 15px;
+            transition: all 0.3s ease;
+        }
+        #responseMessage.success {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        #responseMessage.error {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+        #responseMessage.loading {
+            background-color: #d1ecf1;
+            color: #0c5460;
+        }
+        @media (max-width: 600px) {
+            body { padding: 10px; }
+            .form-container { padding: 20px; }
+            h2 { font-size: 2rem; }
+            .feelings-grid { grid-template-columns: repeat(3, 1fr); gap: 10px; }
+            .feeling-option .emoji { font-size: 2.5rem; }
+            .feeling-option .feeling-text { font-size: 0.8rem; }
+            button[type="submit"] { padding: 15px; font-size: 1.2rem; }
+        }
+        @media (max-width: 400px) {
+            .feelings-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="form-container">
+        <div class="school-header">
+            <div class="school-name">🏫 مدرسة مُشيرفة الابتدائية</div>
+        </div>
+        
+        <h2>كيف تشعر اليوم؟</h2>
+        
+        <form id="studentFeelingsForm">
+            <div class="form-group">
+                <label for="studentName">ما هو اسمك الجميل؟</label>
+                <input type="text" id="studentName" name="studentName" required placeholder="اكتب اسمك هنا...">
+            </div>
+            
+            <div class="form-group">
+                <label for="classLevel">في أي صف أنت؟</label>
+                <select id="classLevel" name="classLevel" required>
+                    <option value="" disabled selected>-- اختر صفك --</option>
+                    <option value="الأول">الأول</option>
+                    <option value="الثاني">الثاني</option>
+                    <option value="الثالث">الثالث</option>
+                    <option value="الرابع">الرابع</option>
+                    <option value="الخامس">الخامس</option>
+                    <option value="السادس">السادس</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="section">وفي أي شعبة؟</label>
+                <select id="section" name="section" required>
+                    <option value="" disabled selected>-- اختر شعبتك --</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>اختر الشعور الذي يصفك الآن:</label>
+                <div class="feelings-grid">
+                    <div><input type="radio" id="happy" name="feeling" value="سعيد" required><label for="happy" class="feeling-option"><span class="emoji">😃</span><span class="feeling-text">سعيد</span></label></div>
+                    <div><input type="radio" id="excited" name="feeling" value="متحمس"><label for="excited" class="feeling-option"><span class="emoji">😄</span><span class="feeling-text">متحمس</span></label></div>
+                    <div><input type="radio" id="proud" name="feeling" value="فخور"><label for="proud" class="feeling-option"><span class="emoji">😊</span><span class="feeling-text">فخور</span></label></div>
+                    <div><input type="radio" id="grateful" name="feeling" value="ممتن"><label for="grateful" class="feeling-option"><span class="emoji">🙏</span><span class="feeling-text">ممتن</span></label></div>
+                    <div><input type="radio" id="relaxed" name="feeling" value="مرتاح"><label for="relaxed" class="feeling-option"><span class="emoji">😌</span><span class="feeling-text">مرتاح</span></label></div>
+                    <div><input type="radio" id="sad" name="feeling" value="حزين"><label for="sad" class="feeling-option"><span class="emoji">😔</span><span class="feeling-text">حزين</span></label></div>
+                    <div><input type="radio" id="anxious" name="feeling" value="قلق"><label for="anxious" class="feeling-option"><span class="emoji">😥</span><span class="feeling-text">قلق</span></label></div>
+                    <div><input type="radio" id="angry" name="feeling" value="غاضب"><label for="angry" class="feeling-option"><span class="emoji">😠</span><span class="feeling-text">غاضب</span></label></div>
+                    <div><input type="radio" id="frustrated" name="feeling" value="محبط"><label for="frustrated" class="feeling-option"><span class="emoji">😤</span><span class="feeling-text">محبط</span></label></div>
+                    <div><input type="radio" id="tired" name="feeling" value="متعب"><label for="tired" class="feeling-option"><span class="emoji">😴</span><span class="feeling-text">متعب</span></label></div>
+                    <div><input type="radio" id="bored" name="feeling" value="ملل"><label for="bored" class="feeling-option"><span class="emoji">🥱</span><span class="feeling-text">أشعر بالملل</span></label></div>
+                    <div><input type="radio" id="confused" name="feeling" value="مرتبك"><label for="confused" class="feeling-option"><span class="emoji">🤔</span><span class="feeling-text">مرتبك</span></label></div>
+                    <div><input type="radio" id="surprised" name="feeling" value="متفاجئ"><label for="surprised" class="feeling-option"><span class="emoji">😮</span><span class="feeling-text">متفاجئ</span></label></div>
+                    <div><input type="radio" id="scared" name="feeling" value="خائف"><label for="scared" class="feeling-option"><span class="emoji">😨</span><span class="feeling-text">خائف</span></label></div>
+                    <div><input type="radio" id="sick" name="feeling" value="مريض"><label for="sick" class="feeling-option"><span class="emoji">🤒</span><span class="feeling-text">مريض</span></label></div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="details">إذا أردت، يمكنك أن تكتب المزيد عن شعورك هنا:</label>
+                <textarea id="details" name="details" rows="4" placeholder="هنا مساحة للكتابة..."></textarea>
+            </div>
+            
+            <button type="submit">إرسال مشاعري 💙</button>
+            <div id="responseMessage"></div>
+        </form>
+
+        <div class="dashboard-link">
+            <a href="dashboard.html">🔐 لوحة التحكم للمعلمين</a>
+        </div>
+    </div>
+
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-firestore-compat.js"></script>
+
+    <script>
+        // Firebase Configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyBPBY5Pe_mn5o17vwkUec8cW9yf2yl6xPE",
+            authDomain: "how-are-you-cb32a.firebaseapp.com",
+            projectId: "how-are-you-cb32a",
+            storageBucket: "how-are-you-cb32a.firebasestorage.app",
+            messagingSenderId: "952793189244",
+            appId: "1:952793189244:web:ef0f25ca04bd38963b32f9",
+            measurementId: "G-QYJ5KFMWPL"
+        };
+
+        // Initialize Firebase
+        const app = firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        const form = document.getElementById('studentFeelingsForm');
+        const responseMessage = document.getElementById('responseMessage');
+
+        form.addEventListener('submit', async function(e) {
+            e.preventDefault(); 
+            
+            // إظهار رسالة التحميل
+            responseMessage.textContent = 'لحظة... يتم الإرسال الآن! ⏳';
+            responseMessage.className = 'loading';
+
+            // جمع البيانات من النموذج
+            const studentName = document.getElementById('studentName').value.trim();
+            const classLevel = document.getElementById('classLevel').value;
+            const section = document.getElementById('section').value;
+            const feeling = document.querySelector('input[name="feeling"]:checked')?.value || 'لم يحدد';
+            const details = document.getElementById('details').value.trim();
+
+            try {
+                // إضافة البيانات إلى Firebase
+                await db.collection('feelings').add({
+                    studentName: studentName,
+                    classLevel: classLevel,
+                    section: section,
+                    feeling: feeling,
+                    details: details,
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                });
+
+                // رسالة النجاح
+                responseMessage.textContent = '✅ شكرًا لك! تم إرسال شعورك بنجاح. نهتم بك دائماً 💙'; 
+                responseMessage.className = 'success';
+                
+                // إعادة تعيين النموذج
+                form.reset();
+                
+                // إخفاء الرسالة بعد 5 ثواني
+                setTimeout(() => {
+                    responseMessage.textContent = '';
+                    responseMessage.className = '';
+                }, 5000);
+                
+            } catch (error) {
+                // رسالة الخطأ
+                responseMessage.textContent = '❌ عفوًا! حدث خطأ. حاول مرة أخرى.';
+                responseMessage.className = 'error';
+                console.error("Error writing document to Firestore: ", error);
+            }
+        });
+    </script>
+
+</body>
+</html>
